@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,6 +14,13 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
+            //.EnableTokenAcquisitionToCallDownstreamApi(PowerBiServiceApi.RequiredScopes)
+            .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
+            .AddMicrosoftGraph(builder.Configuration.GetSection("DownstreamApi"))
+            .AddInMemoryTokenCaches();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
