@@ -15,12 +15,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
-            //.EnableTokenAcquisitionToCallDownstreamApi(PowerBiServiceApi.RequiredScopes)
-            .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
-            .AddMicrosoftGraph(builder.Configuration.GetSection("DownstreamApi"))
-            .AddInMemoryTokenCaches();
+//builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+//    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
+//            //.EnableTokenAcquisitionToCallDownstreamApi(PowerBiServiceApi.RequiredScopes)
+//            .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
+//            .AddMicrosoftGraph(builder.Configuration.GetSection("DownstreamApi"))
+//            .AddInMemoryTokenCaches();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
