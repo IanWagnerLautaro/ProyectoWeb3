@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GrupoLogin.DATA.Model.DTOS;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GrupoLogin.Controllers
 {
@@ -11,6 +12,12 @@ namespace GrupoLogin.Controllers
 
         public IActionResult LoginRegister() 
         { 
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Login(UsuarioDTO usuario) 
+        {
             return View();
         }
     }
