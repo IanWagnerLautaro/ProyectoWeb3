@@ -9,6 +9,12 @@ using System.Text;
 using System.Web;
 using static System.Formats.Asn1.AsnWriter;
 using static System.Net.WebRequestMethods;
+using Microsoft.Graph;
+using Microsoft.Kiota.Abstractions;
+using Azure.Identity;
+using Microsoft.Graph.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Identity.Web;
 
 namespace GrupoLogin.Controllers
 {
@@ -21,7 +27,7 @@ namespace GrupoLogin.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
             return View();
         }
@@ -33,7 +39,7 @@ namespace GrupoLogin.Controllers
 
         public ActionResult Autorizar()
         {
-            var Authorization_Endpoint = "https://login.microsoftonline.com/d4275aeb-3928-4ad7-956f-695cd0bbf3f1/oauth2/v2.0/authorize";
+           var Authorization_Endpoint = "https://login.microsoftonline.com/d4275aeb-3928-4ad7-956f-695cd0bbf3f1/oauth2/v2.0/authorize";
             var Response_Type = "code";
             var Client_Id = "3223742f-f7c0-448f-80d2-8c31f9c788a6";
             var Redirect_Uri = "https://localhost:7156/Home/Autorizado";
@@ -75,39 +81,31 @@ namespace GrupoLogin.Controllers
             }
                 ViewBag.jsonResponse = respuesta;
 
-            return View("Index");
+            return RedirectToAction("LlamarApiAsync");
         }
 
-        public async Task<ActionResult> LlamarApiAsync(string code, string state, string session_state)
+        public async Task<ActionResult> LlamarApiAsync(string accesToken)
         {
+            Console.WriteLine("we");
             using (var httpClient = new HttpClient())
             {
-                var Token_Endpoint = "https://login.microsoftonline.com/d4275aeb-3928-4ad7-956f-695cd0bbf3f1/oauth2/v2.0/token";
+                var Graph_Endpoint = "https://graph.microsoft.com/beta/me";
                 var Grant_Type = "authorization_code";
                 var Redirect_Uri = "https://localhost:7156/Home/Autorizado";
-                var Client_Id = "3223742f-f7c0-448f-80d2-8c31f9c788a6";
                 var Client_Secret = "Af88Q~q5EC8Htr6Xl6dO.1iK4ZZSdL~Kudk51c5k";
                 var Scope = "User.Read";
+                var Client_Id = "3223742f-f7c0-448f-80d2-8c31f9c788a6";
+                var tenantId = "d4275aeb-3928-4ad7-956f-695cd0bbf3f1";
 
-                var content = new FormUrlEncodedContent(new Dictionary<string, string>
-                {
-                    ["grant_type"] = Grant_Type,
-                    ["code"] = code,
-                    ["redirect_uri"] = Redirect_Uri,
-                    ["client_id"] = Client_Id,
-                    ["client_secret"] = Client_Secret,
-                    ["scope"] = Scope
-                });
+                httpClient.DefaultRequestHeaders.Add("Bearer", "MiValorDeEncabezado");
 
-                using HttpResponseMessage response = await httpClient.PostAsync(
-                        Token_Endpoint,
-                        content);
+                using HttpResponseMessage response = await httpClient.GetAsync(Graph_Endpoint);
 
-                var jsonResponse = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"{jsonResponse}\n");
+                //Console.WriteLine(response);
+
             }
-            return Redirect("sd");
-        }
+            return Redirect("Index");
+        }   
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

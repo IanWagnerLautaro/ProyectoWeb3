@@ -1,6 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@using System.Security.Principal
+@using Microsoft.AspNetCore.Authentication
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
@@ -14,3 +16,8 @@
 <br />
 <br />
 <label>Response -></label>  @ViewBag.jsonResponse
+
+<br />
+<br />
+<br />
+<br />
