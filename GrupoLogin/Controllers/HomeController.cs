@@ -15,6 +15,7 @@ namespace GrupoLogin.Controllers
 
         public IActionResult Index()
         {
+
             return View();
         }
 

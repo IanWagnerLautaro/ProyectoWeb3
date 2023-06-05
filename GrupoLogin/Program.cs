@@ -1,7 +1,10 @@
 using GrupoLogin.BL.Services;
 using GrupoLogin.BL.Services.Interfaces;
+using GrupoLogin.DATA;
 using GrupoLogin.DATA.Repositories;
 using GrupoLogin.DATA.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +13,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IProductoService, ProductoService>();
 
 builder.Services.AddTransient<IProductoRepository, ProductoRepository>();
+
+builder.Services.AddDbContext<GrupoLoginContext>(options =>
+ options.UseSqlServer(builder.Configuration.GetConnectionString("EFCoreContext")));
+
+
 
 var app = builder.Build();
 
