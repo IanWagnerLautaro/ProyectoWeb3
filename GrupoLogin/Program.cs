@@ -1,7 +1,15 @@
+using GrupoLogin.BL.Services;
+using GrupoLogin.BL.Services.Interfaces;
+using GrupoLogin.DATA.Repositories;
+using GrupoLogin.DATA.Repositories.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<IProductoService, ProductoService>();
+
+builder.Services.AddTransient<IProductoRepository, ProductoRepository>();
 
 var app = builder.Build();
 
