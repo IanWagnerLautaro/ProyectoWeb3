@@ -1,19 +1,9 @@
 ﻿using GrupoLogin.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Diagnostics;
-using System.Net.Http.Json;
-using System.Reflection.Metadata;
-using System.Text.Json;
-using System.Text;
-using System.Web;
 using static System.Formats.Asn1.AsnWriter;
 using static System.Net.WebRequestMethods;
 using Microsoft.Graph;
-using Microsoft.Kiota.Abstractions;
-using Azure.Identity;
-using Microsoft.Graph.Models;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.Identity.Web;
 
 namespace GrupoLogin.Controllers
@@ -21,10 +11,12 @@ namespace GrupoLogin.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly GraphServiceClient _graphServiceClient;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, GraphServiceClient graphServiceClient)
         {
             _logger = logger;
+            _graphServiceClient = graphServiceClient;
         }
 
         public async Task<IActionResult> IndexAsync()
@@ -32,9 +24,19 @@ namespace GrupoLogin.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        [AuthorizeForScopes(ScopeKeySection = "DownstreamApi:Scopes")]
+        public async Task<IActionResult> PrivacyAsync()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                var me = await _graphServiceClient.Me.Request().GetAsync();
+                ViewData["Me"] = me;
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         public ActionResult Autorizar()
@@ -52,6 +54,8 @@ namespace GrupoLogin.Controllers
 
         public async Task<ActionResult> AutorizadoAsync(string code, string state, string session_state) {
             string respuesta = "";
+
+            var code1 = HttpContext.Request.Cookies[".AspNetCore.Cookies"];
             using (var httpClient = new HttpClient())
             {
                 var Token_Endpoint = "https://login.microsoftonline.com/d4275aeb-3928-4ad7-956f-695cd0bbf3f1/oauth2/v2.0/token";
@@ -64,7 +68,7 @@ namespace GrupoLogin.Controllers
                 var content = new FormUrlEncodedContent(new Dictionary<string, string>
                 {
                     ["grant_type"] = Grant_Type,
-                    ["code"] = code,
+                    ["code"] = code1,
                     ["redirect_uri"] = Redirect_Uri,
                     ["client_id"] = Client_Id,
                     ["client_secret"] = Client_Secret,

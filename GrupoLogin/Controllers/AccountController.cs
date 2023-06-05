@@ -25,7 +25,9 @@ namespace GrupoLogin.Controllers
         public IActionResult SignIn()
         {
             var redirectUrl = Url.Action("Index", "Home");
-            return Challenge(new AuthenticationProperties { RedirectUri = redirectUrl });
+            return Challenge(new AuthenticationProperties { 
+                RedirectUri = redirectUrl,
+                });
         }
 
 
