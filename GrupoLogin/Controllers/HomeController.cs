@@ -5,6 +5,7 @@ using static System.Formats.Asn1.AsnWriter;
 using static System.Net.WebRequestMethods;
 using Microsoft.Graph;
 using Microsoft.Identity.Web;
+using Newtonsoft.Json;
 
 namespace GrupoLogin.Controllers
 {
@@ -53,9 +54,9 @@ namespace GrupoLogin.Controllers
         }
 
         public async Task<ActionResult> AutorizadoAsync(string code, string state, string session_state) {
-            string respuesta = "";
+            JsonResponseModel Result = new JsonResponseModel();
 
-            var code1 = HttpContext.Request.Cookies[".AspNetCore.Cookies"];
+            //var code1 = HttpContext.Request.Cookies[".AspNetCore.Cookies"];
             using (var httpClient = new HttpClient())
             {
                 var Token_Endpoint = "https://login.microsoftonline.com/d4275aeb-3928-4ad7-956f-695cd0bbf3f1/oauth2/v2.0/token";
@@ -68,7 +69,7 @@ namespace GrupoLogin.Controllers
                 var content = new FormUrlEncodedContent(new Dictionary<string, string>
                 {
                     ["grant_type"] = Grant_Type,
-                    ["code"] = code1,
+                    ["code"] = code,
                     ["redirect_uri"] = Redirect_Uri,
                     ["client_id"] = Client_Id,
                     ["client_secret"] = Client_Secret,
@@ -80,17 +81,12 @@ namespace GrupoLogin.Controllers
                         content);
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();
+                Result = JsonConvert.DeserializeObject<JsonResponseModel>(jsonResponse);
+                Console.WriteLine(Result);
                 Console.WriteLine($"{jsonResponse}\n");
-                respuesta = jsonResponse.ToString();
+
             }
-                ViewBag.jsonResponse = respuesta;
 
-            return RedirectToAction("LlamarApiAsync");
-        }
-
-        public async Task<ActionResult> LlamarApiAsync(string accesToken)
-        {
-            Console.WriteLine("we");
             using (var httpClient = new HttpClient())
             {
                 var Graph_Endpoint = "https://graph.microsoft.com/beta/me";
@@ -101,13 +97,20 @@ namespace GrupoLogin.Controllers
                 var Client_Id = "3223742f-f7c0-448f-80d2-8c31f9c788a6";
                 var tenantId = "d4275aeb-3928-4ad7-956f-695cd0bbf3f1";
 
-                httpClient.DefaultRequestHeaders.Add("Bearer", "MiValorDeEncabezado");
+                httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer "+Result.access_token);
 
                 using HttpResponseMessage response = await httpClient.GetAsync(Graph_Endpoint);
 
-                //Console.WriteLine(response);
+                Console.WriteLine(response);
 
             }
+
+            return RedirectToAction("Index");
+        }
+
+        public async Task<ActionResult> LlamarApiAsync(string accesToken)
+        {
+
             return Redirect("Index");
         }   
 
