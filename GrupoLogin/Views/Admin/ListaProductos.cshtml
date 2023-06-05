@@ -2,8 +2,9 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+@model GrupoLogin.WEB.Models.ListaProductosViewModel
+    
 }
-
 <div class="container">
     <div class="text-center">
         <h1>Lista de productos</h1>
@@ -13,69 +14,55 @@
     <table class="table table-bordered">
         <thead style="background:#f0f0f0">
             <tr>
-                <th scope="col">Id</th>
+                @if (Model.Rol == 1)
+                {
+                    <th scope="col">Id</th>
+                }
+                
                 <th scope="col">Nombre</th>
                 <th scope="col">Descripcion</th>
                 <th scope="col">Precio</th>
                 <th scope="col">Cantidad</th>
-                <th scope="col">Modificar</th>
-                <th scope="col">Eliminar</th>
+
+                @if (Model.Rol == 1)
+                {
+                    <th scope="col"></th>
+                }
+                
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>Producto 1</td>
-                <td>Descripcion</td>
-                <td>$500</td>
-                <td>10</td>
-                <td>
-                    <div class="d-flex justify-content-center">
-                        <button type="button" data-bs-toggle="tooltip" class="btn btn-outline-secondary btn-sm edit" title="" style=" margin-bottom: 6px;border:none"><i class="fas fa-pencil-alt"></i></button>
-                    </div>
-                </td>
-                <td>
-                    <div class="d-flex justify-content-center">
-                        <button type="button" data-bs-toggle="tooltip" class="btn btn-outline-secondary btn-sm edit" title="" style=" margin-bottom: 6px;border:none"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Producto 2</td>
-                <td>Descripcion</td>
-                <td>$800</td>
-                <td>20</td>
-                <td >
-                    <div class="d-flex justify-content-center">
-                        <button type="button" data-bs-toggle="tooltip" class="btn btn-outline-secondary btn-sm edit" title="" style=" margin-bottom: 6px;border:none" ><i class="fas fa-pencil-alt"></i></button>
-                    </div>
-                </td>
-                <td>
-                    <div class="d-flex justify-content-center">
-                    <button type="button" data-bs-toggle="tooltip" class="btn btn-outline-secondary btn-sm edit" title="" style=" margin-bottom: 6px;border:none"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Producto 3</td>
-                <td>Descripcion</td>
-                <td>$100</td>
-                <td>40</td>
-                <td>
-                    <div class="d-flex justify-content-center">
-                        <button type="button" data-bs-toggle="tooltip" class="btn btn-outline-secondary btn-sm edit" title="" style=" margin-bottom: 6px;border:none"><i class="fas fa-pencil-alt"></i></button>
-                    </div>
-                </td>
-                <td>
-                    <div class="d-flex justify-content-center">
-                        <button type="button" data-bs-toggle="tooltip" class="btn btn-outline-secondary btn-sm edit" title="" style=" margin-bottom: 6px;border:none"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-                </td>
-            </tr>
+            @foreach(var item in Model.Productos)
+            {
+                <tr>
+                    @if (Model.Rol == 1)
+                    {
+                        <td>@item.Id</td>
+                    }
+                    <td>@item.Nombre</td>
+                    <td>@item.Descripcion</td>
+                    <td>@item.Precio</td>
+                    <td>@item.cantidad</td>
+                    @if(Model.Rol == 1)
+                    {
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <button type="button" onclick="location.href='@Url.Action("EditarProducto", "Admin", new { id = item.Id })'" data-parametro="@item.Id" data-bs-toggle="tooltip" class="btn btn-outline-secondary btn-sm edit" title="" style=" margin-bottom: 6px;border:none"><i class="fas fa-pencil-alt"></i></button>
+                                <button type="button" onclick="location.href='@Url.Action("EliminarProducto", "Admin", new { id = item.Id })'" class="btn btn-outline-danger btn-sm edit" title="" style=" margin-bottom: 6px;border:none"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </td>
+                        
+                    }
+
+                </tr>
+            }
+           
         </tbody>
     </table>
-
 </div>
+
+<script>
+
+
+</script>
 
