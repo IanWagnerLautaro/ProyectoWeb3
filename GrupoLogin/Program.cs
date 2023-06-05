@@ -17,43 +17,6 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
             .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
             .AddMicrosoftGraph(builder.Configuration.GetSection("DownstreamApi"))
             .AddInMemoryTokenCaches();
-            //.AddOpenIdConnect(options =>
-            //{
-            //    options.Events = new OpenIdConnectEvents
-            //    {
-            //        OnTokenValidated = context =>
-            //        {
-            //            // Aquí puedes acceder al token de acceso y al token de identidad después de un inicio de sesión exitoso
-            //            // Puedes acceder al token de acceso a través de 'context.SecurityToken.RawData'
-            //            // Puedes acceder al token de identidad a través de 'context.SecurityToken.Claims'
-
-            //            // Ejemplo: Imprimir el token de acceso en la consola
-            //            Console.WriteLine($"Access Token: {context.SecurityToken.RawData}");
-
-            //            return Task.CompletedTask;
-            //        }
-            //    };
-            //});
-
-//builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme).AddOpenIdConnect
-
-
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(opt =>
-//    {
-//        opt.Audience = "payment";
-//        opt.Authority = "https://localhost:6001";
-
-//        opt.Events.OnTokenValidated = context =>
-//        {
-//            Console.WriteLine("as");
-//        // Token has passed validation and a ClaimsIdentity has been generated.
-//        return Task.CompletedTask;
-//        };
-//    });
-
-
-
 
 #endregion
 

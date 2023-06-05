@@ -6,6 +6,8 @@ using static System.Net.WebRequestMethods;
 using Microsoft.Graph;
 using Microsoft.Identity.Web;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace GrupoLogin.Controllers
 {
@@ -25,10 +27,11 @@ namespace GrupoLogin.Controllers
             return View();
         }
 
+        //[Authorize(Roles = ("Usuario ,Admin"))]
         [AuthorizeForScopes(ScopeKeySection = "DownstreamApi:Scopes")]
         public async Task<IActionResult> PrivacyAsync()
         {
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
             {
                 var me = await _graphServiceClient.Me.Request().GetAsync();
                 ViewData["Me"] = me;
