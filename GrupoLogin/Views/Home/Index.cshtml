@@ -3,16 +3,12 @@
 }
 <link rel="stylesheet" href="~/css/Home/index.css" />
 
-@*@{
-    Layout = "_LayoutHome";
 
-}*@
-
-<div class="container mt-5
-     @if(@TempData["Resultado"] != null)
+<div class="container mt-5">
+     @if(@TempData["Mensaje"] != null)
      {
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <h5>@TempData["Resultado"]</h5>
+        <h5>@TempData["Mensaje"]</h5>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 

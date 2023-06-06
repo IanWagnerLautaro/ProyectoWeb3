@@ -31,7 +31,7 @@ namespace GrupoLogin.WEB.Controllers
                 return View(producto);
             }
             else {
-                TempData["Mensaje"] = $"Tenes que iniciar sesion pedazo de cornudo";
+                TempData["Mensaje"] = $"Tenes que iniciar sesion para esta accion";
 
                 return RedirectToAction("Index", "Home");
             }
@@ -48,7 +48,7 @@ namespace GrupoLogin.WEB.Controllers
             }
             else
             {
-                TempData["Mensaje"] = $"Tenes que iniciar sesion pedazo de cornudo";
+                TempData["Mensaje"] = $"Tenes que iniciar sesion para esta accion";
 
                 return RedirectToAction("Index", "Home");
             }
@@ -64,7 +64,7 @@ namespace GrupoLogin.WEB.Controllers
             }
             else
             {
-                TempData["Mensaje"] = $"Tenes que iniciar sesion pedazo de cornudo";
+                TempData["Mensaje"] = $"Tenes que iniciar sesion para esta accion";
 
                 return RedirectToAction("Index", "Home");
             }
@@ -79,7 +79,7 @@ namespace GrupoLogin.WEB.Controllers
             }
             else
             {
-                TempData["Mensaje"] = $"Tenes que iniciar sesion pedazo de cornudo";
+                TempData["Mensaje"] = $"Tenes que iniciar sesion para esta accion";
                 return RedirectToAction("Index", "Home");
             }
         }
@@ -95,7 +95,7 @@ namespace GrupoLogin.WEB.Controllers
             }
             else
             {
-                TempData["Mensaje"] = $"Tenes que iniciar sesion pedazo de cornudo";
+                TempData["Mensaje"] = $"Tenes que iniciar sesion para esta accion";
 
                 return RedirectToAction("Index", "Home");
             }

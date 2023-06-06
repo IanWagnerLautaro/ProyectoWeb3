@@ -35,6 +35,7 @@ namespace GrupoLogin.WEB.Controllers
             }
             else
             {
+                TempData["Mensaje"] = $"Tenes que iniciar sesion para esta accion";
                 return RedirectToAction("Index", "Home");
             }
         }
