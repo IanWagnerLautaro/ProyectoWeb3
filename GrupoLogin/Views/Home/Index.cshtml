@@ -8,7 +8,15 @@
 
 }*@
 
-<div class="container mt-5">
+<div class="container mt-5
+     @if(@TempData["Resultado"] != null)
+     {
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h5>@TempData["Resultado"]</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    }
    <div class="text-center">
         <h1> Grupo Login </h1>
    </div>    

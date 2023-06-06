@@ -31,6 +31,8 @@ namespace GrupoLogin.WEB.Controllers
                 return View(producto);
             }
             else {
+                TempData["Mensaje"] = $"Tenes que iniciar sesion pedazo de cornudo";
+
                 return RedirectToAction("Index", "Home");
             }
         }
@@ -41,10 +43,13 @@ namespace GrupoLogin.WEB.Controllers
             if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
             {
                 _productoService.EditarProducto(producto, producto.Id);
+                TempData["Resultado"] = $"Se ha editado correctamente: {producto.Nombre}";
                 return RedirectToAction("ListaProductos","Producto");
             }
             else
             {
+                TempData["Mensaje"] = $"Tenes que iniciar sesion pedazo de cornudo";
+
                 return RedirectToAction("Index", "Home");
             }
 
@@ -54,10 +59,13 @@ namespace GrupoLogin.WEB.Controllers
             if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
             {
                 _productoService.DeleteProducto(id);
+                TempData["Resultado"] = $"Se ha eliminado correctamente";
                 return RedirectToAction("ListaProductos", "Producto");
             }
             else
             {
+                TempData["Mensaje"] = $"Tenes que iniciar sesion pedazo de cornudo";
+
                 return RedirectToAction("Index", "Home");
             }
 
@@ -71,6 +79,7 @@ namespace GrupoLogin.WEB.Controllers
             }
             else
             {
+                TempData["Mensaje"] = $"Tenes que iniciar sesion pedazo de cornudo";
                 return RedirectToAction("Index", "Home");
             }
         }
@@ -81,10 +90,13 @@ namespace GrupoLogin.WEB.Controllers
             if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
             {
                 _productoService.CrearProducto(producto);
+                TempData["Resultado"] = $"Se ha registrado correctamente: {producto.Nombre}";
                 return RedirectToAction("ListaProductos", "Producto");
             }
             else
             {
+                TempData["Mensaje"] = $"Tenes que iniciar sesion pedazo de cornudo";
+
                 return RedirectToAction("Index", "Home");
             }
 
