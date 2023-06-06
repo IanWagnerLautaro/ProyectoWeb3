@@ -38,7 +38,7 @@ namespace GrupoLogin.DATA.Migrations
                     b.Property<double>("Precio")
                         .HasColumnType("float");
 
-                    b.Property<int>("cantidad")
+                    b.Property<int>("Cantidad")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

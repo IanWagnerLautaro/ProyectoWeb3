@@ -38,14 +38,17 @@
                 <span asp-validation-for="Descripcion" class="text-danger"></span>
             </div>
             <div class="form-group">
-                    <label asp-for="cantidad" class="control-label"></label>
+                    <label asp-for="Cantidad" class="control-label"></label>
                 <div class="input-field">
-                    <input asp-for="cantidad" />
+                    <input asp-for="Cantidad" />
                 </div>
-                <span asp-validation-for="cantidad" class="text-danger"></span>
+                <span asp-validation-for="Cantidad" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Guardar" class="btn btn-primary" />
+
+                    <input type="submit" value="Guardar" class="btn btn-primary" />
+                    <button type="button" onclick="location.href='@Url.Action("ListaProductos", "Producto")'" class="btn btn-secondary">Cancelar</button>
+
             </div>
         </form>
     </div>

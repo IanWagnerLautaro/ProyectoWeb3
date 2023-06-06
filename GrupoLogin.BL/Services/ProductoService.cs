@@ -58,7 +58,7 @@ namespace GrupoLogin.BL.Services
                     p.Precio = producto.Precio;
                     p.Nombre = producto.Nombre;
                     p.Descripcion = producto.Descripcion;
-                    p.cantidad = producto.cantidad;
+                    p.Cantidad = producto.Cantidad;
 
                     _context.Update(p);
                     _context.SaveChanges();
