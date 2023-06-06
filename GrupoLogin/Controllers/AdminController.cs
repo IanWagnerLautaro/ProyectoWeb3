@@ -26,14 +26,14 @@ namespace GrupoLogin.WEB.Controllers
         {
             ListaProductosViewModel model= new ListaProductosViewModel();
             model.Productos = _productoService.GetAllProductos();
-            model.Rol = 2;
+            model.Rol = 1;
 
             return View("ListaProductos", model);
         }
 
         public IActionResult EditarProducto(int id) 
         {
-            int rol = 2; //Logica para obtener el rol, en caso de ser admin manda a la pantalla de login
+            int rol = 1; //Logica para obtener el rol, en caso de ser admin manda a la pantalla de login
             if (rol != 1) return RedirectToAction("Index","Home");
 
             Producto producto = _productoService.ObtenerProductoPorId(id);
@@ -54,7 +54,7 @@ namespace GrupoLogin.WEB.Controllers
 
         public IActionResult RegistrarProducto()
         {
-            int rol = 2; //Logica para obtener el rol, en caso de ser admin manda a la pantalla de login
+            int rol = 1; //Logica para obtener el rol, en caso de ser admin manda a la pantalla de login
             if (rol != 1) return RedirectToAction("Index", "Home");
 
             return View();
@@ -63,8 +63,12 @@ namespace GrupoLogin.WEB.Controllers
         [HttpPost]
         public IActionResult RegistrarProducto(Producto producto)
         {
-            _productoService.CrearProducto(producto);
-            return View();
+            if (ModelState.IsValid)
+            {
+                _productoService.CrearProducto(producto);
+                RedirectToAction("ListaProductos", producto);
+            }
+            return View(producto);
         }
     }
 }
