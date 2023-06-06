@@ -2,6 +2,7 @@
 using GrupoLogin.DATA;
 using GrupoLogin.DATA.Model;
 using GrupoLogin.WEB.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GrupoLogin.WEB.Controllers
@@ -25,15 +26,17 @@ namespace GrupoLogin.WEB.Controllers
         {
             ListaProductosViewModel model= new ListaProductosViewModel();
             model.Productos = _productoService.GetAllProductos();
-            model.Rol = 1;
+            model.Rol = 2;
 
             return View("ListaProductos", model);
         }
 
         public IActionResult EditarProducto(int id) 
         {
-            Producto producto = _productoService.ObtenerProductoPorId(id);
+            int rol = 2; //Logica para obtener el rol, en caso de ser admin manda a la pantalla de login
+            if (rol != 1) return RedirectToAction("Index","Home");
 
+            Producto producto = _productoService.ObtenerProductoPorId(id);
             return View(producto);
         }
 
@@ -51,6 +54,9 @@ namespace GrupoLogin.WEB.Controllers
 
         public IActionResult RegistrarProducto()
         {
+            int rol = 2; //Logica para obtener el rol, en caso de ser admin manda a la pantalla de login
+            if (rol != 1) return RedirectToAction("Index", "Home");
+
             return View();
         }
 

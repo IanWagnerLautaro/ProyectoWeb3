@@ -6,8 +6,13 @@
     
 }
 <div class="container">
-    <div class="text-center">
+    <div class="d-flex justify-content-between mb-3">
         <h1>Lista de productos</h1>
+        @if (Model.Rol == 1)
+        {
+            <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("RegistrarProducto", "Admin")'">Agregar Producto</button>
+        }
+        
     </div>
 
 
