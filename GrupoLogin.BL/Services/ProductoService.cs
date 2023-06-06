@@ -1,7 +1,6 @@
 ﻿using GrupoLogin.BL.Services.Interfaces;
 using GrupoLogin.DATA;
 using GrupoLogin.DATA.Model;
-using GrupoLogin.DATA.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +12,10 @@ namespace GrupoLogin.BL.Services
 {
     public class ProductoService : IProductoService
     {
-        private IProductoRepository _productoRepository;
         private GrupoLoginContext _context;
 
-        public ProductoService(IProductoRepository productoRepository)
+        public ProductoService()
         {
-            _productoRepository = productoRepository;
             _context = new GrupoLoginContext();
         }
 

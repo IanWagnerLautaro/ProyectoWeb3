@@ -1,8 +1,6 @@
 using GrupoLogin.BL.Services;
 using GrupoLogin.BL.Services.Interfaces;
 using GrupoLogin.DATA;
-using GrupoLogin.DATA.Repositories;
-using GrupoLogin.DATA.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.EntityFrameworkCore;
@@ -49,8 +47,6 @@ builder.Services.AddAuthentication(options =>
 #endregion
 
 builder.Services.AddTransient<IProductoService, ProductoService>();
-
-builder.Services.AddTransient<IProductoRepository, ProductoRepository>();
 
 builder.Services.AddDbContext<GrupoLoginContext>(options =>
  options.UseSqlServer(builder.Configuration.GetConnectionString("EFCoreContext")));
