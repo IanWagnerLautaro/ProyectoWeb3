@@ -83,7 +83,7 @@ namespace GrupoLogin.WEB.Controllers
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
             {
-                return View();
+                return RedirectToAction("ListaProductos");
             }
             else
             {
