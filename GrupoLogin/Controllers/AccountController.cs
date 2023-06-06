@@ -19,7 +19,7 @@ namespace GrupoLogin.Web.Controllers
             return SignOut(new AuthenticationProperties
             {
                 RedirectUri = Url.Action("Index", "Home")
-            }, CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme, "Google");
+            }, CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
         }
 
         public IActionResult SignOutGoogle()

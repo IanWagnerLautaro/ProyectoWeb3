@@ -2,13 +2,14 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+@using GrupoLogin.DATA.Model.Enums;
 @model GrupoLogin.WEB.Models.ListaProductosViewModel
-    
+
 }
 <div class="container">
     <div class="d-flex justify-content-between mb-3">
         <h1>Lista de productos</h1>
-        @if (Model.Rol == 1)
+        @if (Model.Rol == (int)Rol.Admin)
         {
             <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("RegistrarProducto", "Admin")'">Agregar Producto</button>
         }
@@ -19,7 +20,7 @@
     <table class="table table-bordered">
         <thead style="background:#f0f0f0">
             <tr>
-                @if (Model.Rol == 1)
+                @if (Model.Rol == (int)Rol.Admin)
                 {
                     <th scope="col">Id</th>
                 }
@@ -29,7 +30,7 @@
                 <th scope="col">Precio</th>
                 <th scope="col">Cantidad</th>
 
-                @if (Model.Rol == 1)
+                @if (Model.Rol == (int)Rol.Admin)
                 {
                     <th scope="col"></th>
                 }
@@ -40,7 +41,7 @@
             @foreach(var item in Model.Productos)
             {
                 <tr>
-                    @if (Model.Rol == 1)
+                    @if (Model.Rol == (int)Rol.Admin)
                     {
                         <td>@item.Id</td>
                     }
@@ -48,7 +49,7 @@
                     <td>@item.Descripcion</td>
                     <td>@item.Precio</td>
                     <td>@item.cantidad</td>
-                    @if(Model.Rol == 1)
+                    @if (Model.Rol == (int)Rol.Admin)
                     {
                         <td>
                             <div class="d-flex justify-content-center">

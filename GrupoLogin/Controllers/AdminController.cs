@@ -1,6 +1,7 @@
 ﻿using GrupoLogin.BL.Services.Interfaces;
 using GrupoLogin.DATA;
 using GrupoLogin.DATA.Model;
+using GrupoLogin.DATA.Model.Enums;
 using GrupoLogin.WEB.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -24,47 +25,85 @@ namespace GrupoLogin.WEB.Controllers
 
         public IActionResult ListaProductos()
         {
-            ListaProductosViewModel model= new ListaProductosViewModel();
-            model.Productos = _productoService.GetAllProductos();
-            model.Rol = 2;
+            if (User.Identity.IsAuthenticated)
+            {
+                ListaProductosViewModel model= new ListaProductosViewModel();
+                model.Productos = _productoService.GetAllProductos();
+                model.Rol = User.IsInRole("Admin") ? (int)Rol.Admin : (int)Rol.Usuario;
 
-            return View("ListaProductos", model);
+                return View("ListaProductos", model);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         public IActionResult EditarProducto(int id) 
         {
-            int rol = 2; //Logica para obtener el rol, en caso de ser admin manda a la pantalla de login
-            if (rol != 1) return RedirectToAction("Index","Home");
-
-            Producto producto = _productoService.ObtenerProductoPorId(id);
-            return View(producto);
+            if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                Producto producto = _productoService.ObtenerProductoPorId(id);
+                return View(producto);
+            }
+            else {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpPost]
         public IActionResult EditarProducto(Producto producto)
         {
-            _productoService.EditarProducto(producto, producto.Id);
-            return RedirectToAction("ListaProductos");
+            if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                _productoService.EditarProducto(producto, producto.Id);
+                return RedirectToAction("ListaProductos");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
         }
         public IActionResult EliminarProducto(int id)
         {
-            _productoService.DeleteProducto(id);
-            return RedirectToAction("ListaProductos");
+            if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                _productoService.DeleteProducto(id);
+                return RedirectToAction("ListaProductos");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
         }
 
         public IActionResult RegistrarProducto()
         {
-            int rol = 2; //Logica para obtener el rol, en caso de ser admin manda a la pantalla de login
-            if (rol != 1) return RedirectToAction("Index", "Home");
-
-            return View();
+            if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpPost]
         public IActionResult RegistrarProducto(Producto producto)
         {
-            _productoService.CrearProducto(producto);
-            return View();
+            if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                _productoService.CrearProducto(producto);
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
         }
     }
 }
