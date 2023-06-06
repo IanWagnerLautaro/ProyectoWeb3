@@ -19,6 +19,14 @@ namespace GrupoLogin.Controllers
             return SignOut(new AuthenticationProperties
             {
                 RedirectUri = Url.Action("Index", "Home")
+            }, CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme, "Google");
+        }
+
+        public IActionResult SignOutGoogle()
+        {
+            return SignOut(new AuthenticationProperties
+            {
+                RedirectUri = Url.Action("Index", "Home")
             }, CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
         }
 
@@ -27,7 +35,16 @@ namespace GrupoLogin.Controllers
             var redirectUrl = Url.Action("Index", "Home");
             return Challenge(new AuthenticationProperties { 
                 RedirectUri = redirectUrl,
-                });
+                } );
+        }
+
+        public IActionResult SignInGoogle()
+        {
+            var redirectUrl = Url.Action("Index", "Home");
+            return Challenge(new AuthenticationProperties
+            {
+                RedirectUri = redirectUrl,
+            }, "Google");
         }
 
 

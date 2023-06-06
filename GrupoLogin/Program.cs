@@ -12,11 +12,16 @@ var initialScopes = builder.Configuration.GetValue<string>("DownstreamApi:Scopes
 
 
 
-builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
-            .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
-            .AddMicrosoftGraph(builder.Configuration.GetSection("DownstreamApi"))
-            .AddInMemoryTokenCaches();
+builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme).AddGoogle(options =>
+            {
+                options.ClientId = builder.Configuration["GoogleAuthentication:ClientId"];
+                options.ClientSecret = builder.Configuration["GoogleAuthentication:ClientSecret"];
+            })
+            .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
+                .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
+                .AddMicrosoftGraph(builder.Configuration.GetSection("DownstreamApi"))
+                .AddInMemoryTokenCaches();
+
 
 #endregion
 
