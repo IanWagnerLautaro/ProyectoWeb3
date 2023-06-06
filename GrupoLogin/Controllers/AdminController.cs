@@ -23,22 +23,6 @@ namespace GrupoLogin.WEB.Controllers
             return View();
         }
 
-        public IActionResult ListaProductos()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                ListaProductosViewModel model= new ListaProductosViewModel();
-                model.Productos = _productoService.GetAllProductos();
-                model.Rol = User.IsInRole("Admin") ? (int)Rol.Admin : (int)Rol.Usuario;
-
-                return View("ListaProductos", model);
-            }
-            else
-            {
-                return RedirectToAction("Index");
-            }
-        }
-
         public IActionResult EditarProducto(int id) 
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
@@ -57,7 +41,7 @@ namespace GrupoLogin.WEB.Controllers
             if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
             {
                 _productoService.EditarProducto(producto, producto.Id);
-                return RedirectToAction("ListaProductos");
+                return RedirectToAction("ListaProductos","Producto");
             }
             else
             {
@@ -70,7 +54,7 @@ namespace GrupoLogin.WEB.Controllers
             if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
             {
                 _productoService.DeleteProducto(id);
-                return RedirectToAction("ListaProductos");
+                return RedirectToAction("ListaProductos", "Producto");
             }
             else
             {
@@ -83,7 +67,7 @@ namespace GrupoLogin.WEB.Controllers
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
             {
-                return RedirectToAction("ListaProductos");
+                return View();
             }
             else
             {
@@ -97,7 +81,7 @@ namespace GrupoLogin.WEB.Controllers
             if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
             {
                 _productoService.CrearProducto(producto);
-                return View();
+                return RedirectToAction("ListaProductos", "Producto");
             }
             else
             {

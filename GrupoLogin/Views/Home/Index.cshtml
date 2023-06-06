@@ -15,7 +15,7 @@
     @if (User.Identity.IsAuthenticated)
     {
         <div class="d-flex justify-content-center my-5">
-            <button type="button" onclick="location.href='@Url.Action("ListaProductos", "Admin")'" class="btn solid">Ver producto</button>
+            <button type="button" onclick="location.href='@Url.Action("ListaProductos", "Producto")'" class="btn solid">Ver producto</button>
         </div>
     }
     else
