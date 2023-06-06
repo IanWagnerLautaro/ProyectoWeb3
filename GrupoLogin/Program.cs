@@ -3,6 +3,7 @@ using GrupoLogin.BL.Services.Interfaces;
 using GrupoLogin.DATA;
 using GrupoLogin.DATA.Repositories;
 using GrupoLogin.DATA.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
@@ -18,15 +19,31 @@ var initialScopes = builder.Configuration.GetValue<string>("DownstreamApi:Scopes
 
 
 
-builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme).AddGoogle(options =>
+//builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme).AddGoogle(options =>
+//{
+//    options.ClientId = builder.Configuration["GoogleAuthentication:ClientId"];
+//    options.ClientSecret = builder.Configuration["GoogleAuthentication:ClientSecret"];
+//})
+//            .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
+//                .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
+//                .AddMicrosoftGraph(builder.Configuration.GetSection("DownstreamApi"))
+//                .AddInMemoryTokenCaches();
+
+builder.Services.AddAuthentication(options =>
 {
-    options.ClientId = builder.Configuration["GoogleAuthentication:ClientId"];
-    options.ClientSecret = builder.Configuration["GoogleAuthentication:ClientSecret"];
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
 })
-            .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
-                .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
-                .AddMicrosoftGraph(builder.Configuration.GetSection("DownstreamApi"))
-                .AddInMemoryTokenCaches();
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["GoogleAuthentication:ClientId"];
+        options.ClientSecret = builder.Configuration["GoogleAuthentication:ClientSecret"];
+
+    })
+    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
+        .EnableTokenAcquisitionToCallDownstreamApi(builder.Configuration.GetSection("DownstreamApi:Scopes").Value.Split(' '))
+        .AddMicrosoftGraph(builder.Configuration.GetSection("DownstreamApi"))
+        .AddInMemoryTokenCaches();
 
 
 #endregion
