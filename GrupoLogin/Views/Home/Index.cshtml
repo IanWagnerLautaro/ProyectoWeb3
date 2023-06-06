@@ -3,30 +3,43 @@
 }
 <link rel="stylesheet" href="~/css/Home/index.css" />
 
-
-<div class="container mt-5">
-     @if(@TempData["Mensaje"] != null)
-     {
+@if (@TempData["Mensaje"] != null)
+{
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <h5>@TempData["Mensaje"]</h5>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    }
-   <div class="text-center">
-        <h1> Grupo Login </h1>
-   </div>    
-    @if (User.Identity.IsAuthenticated)
-    {
-        <div class="d-flex justify-content-center my-5">
-            <button type="button" onclick="location.href='@Url.Action("ListaProductos", "Producto")'" class="btn solid">Ver producto</button>
+}
+<div class="container mt-5">
+
+    <div class="row">
+
+        <div class="col-6">
+            <div class="text-center">
+                <h1>Control de Stock</h1>
+                <h6>Grupo 2 - Login</h6>
+                <div class="text-center">El objetivo de este proyecto es analizar los distintos tipos de autenticacion en .NET y analizar sus diferencias e implementaciones</div>
+
+
+            </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="d-flex justify-content-center my-5">
+                    <button type="button" onclick="location.href='@Url.Action("ListaProductos", "Producto")'" class="btn solid">Ver productos</button>
+                </div>
+            }
+            else
+            {
+                <div class="d-flex justify-content-center my-5">
+                    <button type="button" onclick="location.href='@Url.Action("SignIn", "Account")'" class="btn solid">Ir al login</button>
+                </div>
+            }
         </div>
-    }
-    else
-    {
-    <div class="d-flex justify-content-center my-5">
-        <button type="button" onclick="location.href='@Url.Action("SignIn", "Account")'" class="btn solid">Ir al login</button>
-    </div>       
-    }
+        <div class="col-6">
+            <img src="~/img/LoginRegister/stock.svg" class="image" style="height: 45vh">
+        </div>
+    </div>
+
 
 </div>
