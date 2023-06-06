@@ -15,11 +15,13 @@ namespace GrupoLogin.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly GraphServiceClient _graphServiceClient;
+        private readonly IConfiguration _config;
 
-        public HomeController(ILogger<HomeController> logger, GraphServiceClient graphServiceClient)
+        public HomeController(ILogger<HomeController> logger, GraphServiceClient graphServiceClient, IConfiguration config)
         {
             _logger = logger;
             _graphServiceClient = graphServiceClient;
+            _config = config;
         }
 
         public async Task<IActionResult> IndexAsync()
@@ -45,9 +47,9 @@ namespace GrupoLogin.Controllers
 
         public ActionResult Autorizar()
         {
-           var Authorization_Endpoint = "https://login.microsoftonline.com/d4275aeb-3928-4ad7-956f-695cd0bbf3f1/oauth2/v2.0/authorize";
+            var Authorization_Endpoint = _config.GetValue<string>("AzureAd:Authorization_Endpoint");
             var Response_Type = "code";
-            var Client_Id = "3223742f-f7c0-448f-80d2-8c31f9c788a6";
+            var Client_Id = _config.GetValue<string>("AzureAd:ClientId");
             var Redirect_Uri = "https://localhost:7156/Home/Autorizado";
             var Scope = "User.Read";
             var State = "ThisIsMyStateValue";
@@ -62,11 +64,11 @@ namespace GrupoLogin.Controllers
             //var code1 = HttpContext.Request.Cookies[".AspNetCore.Cookies"];
             using (var httpClient = new HttpClient())
             {
-                var Token_Endpoint = "https://login.microsoftonline.com/d4275aeb-3928-4ad7-956f-695cd0bbf3f1/oauth2/v2.0/token";
+                var Token_Endpoint = _config.GetValue<string>("AzureAd:Token_Endpoint");
                 var Grant_Type = "authorization_code";
                 var Redirect_Uri = "https://localhost:7156/Home/Autorizado";
-                var Client_Id = "3223742f-f7c0-448f-80d2-8c31f9c788a6";
-                var Client_Secret = "Af88Q~q5EC8Htr6Xl6dO.1iK4ZZSdL~Kudk51c5k";
+                var Client_Id = _config.GetValue<string>("AzureAd:ClientId");
+                var Client_Secret = _config.GetValue<string>("AzureAd:ClientSecret");
                 var Scope = "User.Read";
                 
                 var content = new FormUrlEncodedContent(new Dictionary<string, string>
@@ -93,19 +95,11 @@ namespace GrupoLogin.Controllers
             using (var httpClient = new HttpClient())
             {
                 var Graph_Endpoint = "https://graph.microsoft.com/beta/me";
-                var Grant_Type = "authorization_code";
-                var Redirect_Uri = "https://localhost:7156/Home/Autorizado";
-                var Client_Secret = "Af88Q~q5EC8Htr6Xl6dO.1iK4ZZSdL~Kudk51c5k";
-                var Scope = "User.Read";
-                var Client_Id = "3223742f-f7c0-448f-80d2-8c31f9c788a6";
-                var tenantId = "d4275aeb-3928-4ad7-956f-695cd0bbf3f1";
-
                 httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer "+Result.access_token);
 
                 using HttpResponseMessage response = await httpClient.GetAsync(Graph_Endpoint);
-
-                Console.WriteLine(response);
-
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"{jsonResponse}\n");
             }
 
             return RedirectToAction("Index");
