@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 
 namespace GrupoLogin.Web.Controllers
 {
@@ -24,10 +25,11 @@ namespace GrupoLogin.Web.Controllers
 
         public IActionResult SignOutGoogle()
         {
+            var redirectUrl = Url.Action("Index", "Home");
             return SignOut(new AuthenticationProperties
             {
-                RedirectUri = Url.Action("Index", "Home")
-            }, CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
+                RedirectUri = redirectUrl
+            }, OpenIdConnectDefaults.AuthenticationScheme, CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
         public IActionResult SignIn()
@@ -36,7 +38,7 @@ namespace GrupoLogin.Web.Controllers
             return Challenge(new AuthenticationProperties
             {
                 RedirectUri = redirectUrl,
-            });
+            }, OpenIdConnectDefaults.AuthenticationScheme);
         }
 
         public IActionResult SignInGoogle()
@@ -45,7 +47,7 @@ namespace GrupoLogin.Web.Controllers
             return Challenge(new AuthenticationProperties
             {
                 RedirectUri = redirectUrl,
-            }, "Google");
+            }, GoogleDefaults.AuthenticationScheme);
         }
 
 
