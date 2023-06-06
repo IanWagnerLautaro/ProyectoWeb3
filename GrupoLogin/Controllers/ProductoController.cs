@@ -35,7 +35,7 @@ namespace GrupoLogin.WEB.Controllers
             }
             else
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
         }
     }
