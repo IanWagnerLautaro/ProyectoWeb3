@@ -15,12 +15,21 @@ namespace GrupoLogin.Web.Controllers
 
 
 
-        public IActionResult SignOut()
+        public async Task<IActionResult> SignOutAsync()
         {
-            return SignOut(new AuthenticationProperties
-            {
-                RedirectUri = Url.Action("Index", "Home")
-            }, CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
+            //return SignOut(new AuthenticationProperties
+            //{
+            //    RedirectUri = Url.Action("Index", "Home")
+            //}, CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
+
+            var redirectUrl = Url.Action("Index", "Home");
+            //return SignOut(new AuthenticationProperties
+            //{
+            //    RedirectUri = redirectUrl
+            //}, "Google");
+
+            await HttpContext.SignOutAsync();
+            return Redirect(redirectUrl);
         }
 
         public IActionResult SignOutGoogle()
@@ -39,6 +48,12 @@ namespace GrupoLogin.Web.Controllers
             {
                 RedirectUri = redirectUrl,
             }, OpenIdConnectDefaults.AuthenticationScheme);
+
+            //var redirectUrl = Url.Action("Index", "Home");
+            //return Challenge(new AuthenticationProperties
+            //{
+            //    RedirectUri = redirectUrl,
+            //}, GoogleDefaults.AuthenticationScheme);
         }
 
         public IActionResult SignInGoogle()

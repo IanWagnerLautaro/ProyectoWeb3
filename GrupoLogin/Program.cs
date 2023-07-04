@@ -2,6 +2,7 @@ using GrupoLogin.BL.Services;
 using GrupoLogin.BL.Services.Interfaces;
 using GrupoLogin.DATA;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
@@ -27,21 +28,39 @@ var initialScopes = builder.Configuration.GetValue<string>("DownstreamApi:Scopes
 //                .AddMicrosoftGraph(builder.Configuration.GetSection("DownstreamApi"))
 //                .AddInMemoryTokenCaches();
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-})
+//builder.Services.AddAuthentication(options =>
+//{
+//    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+//    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+//})
+//    .AddGoogle(options =>
+//    {
+//        options.ClientId = builder.Configuration["GoogleAuthentication:ClientId"];
+//        options.ClientSecret = builder.Configuration["GoogleAuthentication:ClientSecret"];
+
+//    })
+//    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
+//        .EnableTokenAcquisitionToCallDownstreamApi(builder.Configuration.GetSection("DownstreamApi:Scopes").Value.Split(' '))
+//        .AddMicrosoftGraph(builder.Configuration.GetSection("DownstreamApi"))
+//        .AddInMemoryTokenCaches();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddGoogle(options =>
     {
+        options.Events.OnRedirectToAuthorizationEndpoint = context =>
+        {
+            context.Response.Redirect(context.RedirectUri + "&prompt=consent");
+            return Task.CompletedTask;
+        };
         options.ClientId = builder.Configuration["GoogleAuthentication:ClientId"];
         options.ClientSecret = builder.Configuration["GoogleAuthentication:ClientSecret"];
-
+        options.SaveTokens = true;
     })
     .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
         .EnableTokenAcquisitionToCallDownstreamApi(builder.Configuration.GetSection("DownstreamApi:Scopes").Value.Split(' '))
         .AddMicrosoftGraph(builder.Configuration.GetSection("DownstreamApi"))
-        .AddInMemoryTokenCaches();
+        .AddInMemoryTokenCaches(); 
+
 
 
 #endregion

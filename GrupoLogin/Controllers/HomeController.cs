@@ -15,13 +15,13 @@ namespace GrupoLogin.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly GraphServiceClient _graphServiceClient;
+        //private readonly GraphServiceClient _graphServiceClient;
         private readonly IConfiguration _config;
 
-        public HomeController(ILogger<HomeController> logger, GraphServiceClient graphServiceClient, IConfiguration config)
+        public HomeController(ILogger<HomeController> logger, /*GraphServiceClient graphServiceClient,*/ IConfiguration config)
         {
             _logger = logger;
-            _graphServiceClient = graphServiceClient;
+            //_graphServiceClient = graphServiceClient;
             _config = config;
         }
 
@@ -31,20 +31,20 @@ namespace GrupoLogin.Web.Controllers
         }
 
         //[Authorize(Roles = ("Usuario ,Admin"))]
-        [AuthorizeForScopes(ScopeKeySection = "DownstreamApi:Scopes")]
-        public async Task<IActionResult> PrivacyAsync()
-        {
-            if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-            {
-                var me = await _graphServiceClient.Me.Request().GetAsync();
-                ViewData["Me"] = me;
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Index");
-            }
-        }
+        //[AuthorizeForScopes(ScopeKeySection = "DownstreamApi:Scopes")]
+        //public async Task<IActionResult> PrivacyAsync()
+        //{
+        //    if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+        //    {
+        //        //var me = await _graphServiceClient.Me.Request().GetAsync();
+        //        ViewData["Me"] = me;
+        //        return View();
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Index");
+        //    }
+        //}
 
         public ActionResult Autorizar()
         {
