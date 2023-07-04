@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 using System.Configuration;
 
@@ -55,6 +56,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.ClientId = builder.Configuration["GoogleAuthentication:ClientId"];
         options.ClientSecret = builder.Configuration["GoogleAuthentication:ClientSecret"];
         options.SaveTokens = true;
+    })
+    .AddFacebook(facebookOptions =>
+    {
+        facebookOptions.ClientId = builder.Configuration["FacebookAuthentication:ClientId"];
+        facebookOptions.ClientSecret = builder.Configuration["FacebookAuthentication:ClientSecret"];
+        facebookOptions.SaveTokens = true;
     })
     .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
         .EnableTokenAcquisitionToCallDownstreamApi(builder.Configuration.GetSection("DownstreamApi:Scopes").Value.Split(' '))

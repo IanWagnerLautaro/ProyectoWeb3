@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Facebook;
 
 namespace GrupoLogin.Web.Controllers
 {
@@ -63,6 +64,15 @@ namespace GrupoLogin.Web.Controllers
             {
                 RedirectUri = redirectUrl,
             }, GoogleDefaults.AuthenticationScheme);
+        }
+
+        public IActionResult SignInFacebook()
+        {
+            var redirectUrl = Url.Action("Index", "Home");
+            return Challenge(new AuthenticationProperties
+            {
+                RedirectUri = redirectUrl,
+            }, FacebookDefaults.AuthenticationScheme);
         }
 
 
