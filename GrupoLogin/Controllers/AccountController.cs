@@ -75,6 +75,15 @@ namespace GrupoLogin.Web.Controllers
             }, FacebookDefaults.AuthenticationScheme);
         }
 
+        public IActionResult SignInLinkedin()
+        {
+            var redirectUrl = Url.Action("Index", "Home");
+            return Challenge(new AuthenticationProperties
+            {
+                RedirectUri = redirectUrl,
+            }, "LinkedIn");
+        }
+
 
 
     }

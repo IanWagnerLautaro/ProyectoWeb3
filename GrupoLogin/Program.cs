@@ -57,6 +57,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.ClientSecret = builder.Configuration["GoogleAuthentication:ClientSecret"];
         options.SaveTokens = true;
     })
+    .AddLinkedIn(linkedinOptions =>
+    {
+        linkedinOptions.ClientId = builder.Configuration["LinkedinAuthentication:ClientId"];
+        linkedinOptions.ClientSecret = builder.Configuration["LinkedinAuthentication:ClientSecret"];
+        linkedinOptions.SaveTokens = true;
+    })
     .AddFacebook(facebookOptions =>
     {
         facebookOptions.ClientId = builder.Configuration["FacebookAuthentication:ClientId"];
